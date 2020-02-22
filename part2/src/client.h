@@ -65,7 +65,7 @@ public:
     void register_self() {
         connect(socket_fd, (struct sockaddr *)&server_addr, sizeof(server_addr));
         assert(send(socket_fd, "register" , strlen("register"), 0 )>0);
-        bzero(recv_buff, sizeof(recv_buff));
+        memset(recv_buff, '\0', sizeof(recv_buff));
         while(read( socket_fd , recv_buff, 1024) == 0) {
             sleep(1);
         };
@@ -87,7 +87,7 @@ public:
 
     void on_message() {
         while(connected) {
-            bzero(recv_buff, sizeof(recv_buff));
+            memset(recv_buff, '\0', sizeof(recv_buff));
             int valread = read(socket_fd, recv_buff, 1024);
             if (valread > 0) {
                 //receive buffer might contain multiple messages if they were sent consequtively.
@@ -134,7 +134,7 @@ public:
     }
 
     void send_message(char* msg, char* receiver_ip) {
-        bzero(send_buff, sizeof(send_buff));
+        memset(send_buff, '\0', sizeof(send_buff));
         strcat(send_buff, "Send,");
         strcat(send_buff, receiver_ip);
         strcat(send_buff, ",");
@@ -144,7 +144,7 @@ public:
     }
 
     void send_termination_signal() {
-        bzero(send_buff, sizeof(send_buff));
+        memset(send_buff, '\0', sizeof(send_buff));
         strcat(send_buff, "Term,");
         strcat(send_buff, inet_ntoa(self_addr.sin_addr));
         strcat(send_buff, ",");

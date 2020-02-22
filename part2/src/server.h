@@ -4,6 +4,7 @@
 #include <stdlib.h>
 #include <netinet/in.h>
 #include <assert.h>
+#include <string.h>
 #include <arpa/inet.h>
 
 
@@ -102,7 +103,7 @@ public:
     }
 
     void handle_client_message(int client_idx) {
-        bzero(recv_buff, sizeof(recv_buff));
+        memset(recv_buff, '\0', sizeof(recv_buff));
         int valread = read(client_socket[client_idx] , recv_buff, 1024);
         if (valread > 0) {
             //receive buffer might contain multiple messages if they were sent consequtively.
@@ -160,7 +161,7 @@ public:
     // the client should receive a message formatted like "From,sender_ip,msg_content"
     void send_msg(char* sender_ip, char* receiver_ip, const char* msg) {
         int fp_idx = get_client_ip_index(receiver_ip);
-        bzero(send_buff, sizeof(send_buff));
+        memset(send_buff, '\0', sizeof(send_buff));
         strcat(send_buff, "From,");
         strcat(send_buff, sender_ip);
         strcat(send_buff, ",");
@@ -171,7 +172,7 @@ public:
 
     //server will exit when it receives a terminate signal from one of its clients
     void terminate() {
-        bzero(send_buff, sizeof(send_buff));
+        memset(send_buff, '\0', sizeof(send_buff));
         strcat(send_buff, "Term,");
         strcat(send_buff, inet_ntoa(server_addr.sin_addr));
         strcat(send_buff, ",");

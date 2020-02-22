@@ -2,7 +2,7 @@
 #include <assert.h>
 #include "client.h"
 int main(int argx, char** argv) {
-    assert(argx == 3);
+    assert(argx ==3);
     Client* s = new Client(argv[2], "127.0.0.1");
     s->start();
     s->send_message("hello", "127.0.0.2");
